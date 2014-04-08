@@ -9,7 +9,7 @@ Login to your account.
 
 ### .task(description, uploads)
 
-Create a new task, uploads is an array of string paths, can be null.
+Create a new task, uploads is an array of string paths, must include at least one upload by Swiftly rules.
 
 ## License (MIT)
 
