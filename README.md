@@ -1,4 +1,4 @@
 nightmare-swiftly
 =================
 
-[Nightmare](segmentio/nightmare) plugin for Swiftly.com
+[Nightmare](https://github.com/segmentio/nightmare) plugin for Swiftly.com
