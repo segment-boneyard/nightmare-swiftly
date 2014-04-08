@@ -1,0 +1,19 @@
+{
+  "name": "nightmare-swiftly",
+  "version": "0.0.1",
+  "author": "Segment.io",
+  "keywords": [
+    "nightmare",
+    "phantomjs",
+    "swiftly"
+  ],
+  "description": "A Nightmare plugin for Swiftly.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/segmentio/nightmare-swiftly.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
