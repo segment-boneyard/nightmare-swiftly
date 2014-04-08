@@ -31,9 +31,11 @@ exports.task = function(description, uploads){
       .wait(2000)
       .type('#body', description);
 
-    uploads.forEach(function (path) {
-      nightmare.upload('input[name=qqfile]', path);
-    });
+    if (uploads) {
+      uploads.forEach(function (path) {
+        nightmare.upload('input[name=qqfile]', path);
+      });
+    }
 
     nightmare
       .wait(5000)
