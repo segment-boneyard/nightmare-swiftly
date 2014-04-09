@@ -47,3 +47,72 @@ exports.task = function(instructions, uploads, callback){
       }, callback);
   };
 };
+
+/**
+ * On task state.
+ *
+ * @param {String} url
+ * @param {String} state "Delivered", "Approved"
+ * @param {Function} callback
+ */
+
+exports.onState = function(url, state, callback) {
+  var spacing = 1000 * 60 * 10; // 10 minutes
+  return function(nightmare){
+    var interval = setInterval(function () {
+      nightmare
+        .goto(url)
+        .evaluate(function () {
+          var pill = document.querySelector('.pill');
+          return (pill ? pill.textContent : '');
+        }, function (status) {
+          if (status === 'Delivered') {
+            cancelInterval(interval);
+            callback();
+          }
+        });
+    }, spacing);
+  };
+};
+
+/**
+ * Download the results of a task.
+ *
+ * @param {String} url
+ * @param {String} path
+ */
+
+exports.download = function(url, path) {
+  return function(nightmare){
+    nightmare
+      .run(function () {
+        var urls = document.querySelectorAll('.attachment__actions__download')
+          .map(function (link) {
+            return link.href;
+          })
+          .filter(function (url) {
+            return url.indexOf('deliveries') > 0;
+          });
+        return urls;
+      }, function (urls) {
+        done();
+      })
+      .wait(1000);
+  };
+};
+
+/**
+ * Approve a task.
+ *
+ * @param {String} url
+ */
+
+exports.approve = function(url) {
+  return function(nightmare){
+    nightmare
+      .click('.task-actions .button--primary')
+      .click('.face--good')
+      .click('.approve-delivery .button--primary')
+      .wait();
+  };
+};
