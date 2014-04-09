@@ -1,4 +1,10 @@
 
+n.n.n / 2014-04-08 
+==================
+
+  * adding several more macros
+  * fixing history
+
 0.0.2 / 2014-04-08 
 ==================
 
