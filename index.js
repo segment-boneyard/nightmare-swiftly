@@ -20,16 +20,17 @@ exports.login = function(email, password){
 /**
  * Create a new task on Swiftly.
  *
- * @param {String} description
+ * @param {String} instructions
  * @param {Array} uploads
+ * @param {Function} callback
  */
 
-exports.task = function(description, uploads){
+exports.task = function(instructions, uploads, callback){
   return function(nightmare){
     nightmare
       .goto('https://swiftly.com/create')
       .wait(2000)
-      .type('#body', description);
+      .type('#body', instructions);
 
     uploads.forEach(function (path) {
       nightmare.upload('input[name=qqfile]', path);
@@ -40,6 +41,9 @@ exports.task = function(description, uploads){
       .click('#task-pay-button')
       .wait(500)
       .click('#pay-button')
-      .wait();
+      .wait()
+      .evaluate(function () {
+        return window.location.href;
+      }, callback);
   };
 };
