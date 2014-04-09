@@ -1,5 +1,5 @@
 
-n.n.n / 2014-04-08 
+0.0.2 / 2014-04-08 
 ==================
 
   * adding task url and cleaning up naming
