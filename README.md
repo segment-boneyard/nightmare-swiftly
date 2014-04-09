@@ -7,9 +7,21 @@ nightmare-swiftly
 
 Login to your account.
 
-### .task(description, uploads)
+### .task(instructions, uploads, callback)
 
-Create a new task, uploads is an array of string paths, must include at least one upload by Swiftly rules.
+Create a new task, uploads is an array of string paths, must include at least one upload by Swiftly rules. The callback signature is `cb(taskUrl)`.
+
+### .onState(taskUrl, state, callback)
+
+Lets you wait until a task hits a state like "Completed" or "Approved".
+
+### .download(taskUrl, path)
+
+Download all the files produced with the task to the `path`.
+
+### .approve(taskUrl)
+
+Approve the completed task.
 
 ## License (MIT)
 
