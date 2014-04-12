@@ -1,4 +1,11 @@
 
+n.n.n / 2014-04-11 
+==================
+
+  * fixing download and .wait(fn)
+  * updating readme with new macros
+  * fixing history
+
 0.0.3 / 2014-04-08 
 ==================
 
