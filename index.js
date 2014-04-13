@@ -1,5 +1,7 @@
 
 var exec = require('child_process').exec;
+var request = require('superagent');
+var fs = require('fs');
 
 /**
  * Login to a Swiftly account.
@@ -108,8 +110,9 @@ var download = exports.download = function(path, url) {
         });
         return urls;
       }, function (urls) {
-        urls.forEach(function (file) {
-          exec('wget -P ' + path + ' ' + file);
+        urls.forEach(function (file, index) {
+          var stream = fs.createWriteStream(path + 'file-' + index + '.svg');
+          request.get(file).pipe(stream);
         });
       })
       .wait(3000);
