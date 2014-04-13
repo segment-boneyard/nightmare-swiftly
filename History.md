@@ -1,4 +1,10 @@
 
+n.n.n / 2014-04-12 
+==================
+
+  * viewport improves screenshots if you need em
+  * fixing history
+
 0.0.4 / 2014-04-11 
 ==================
 
