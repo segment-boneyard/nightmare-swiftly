@@ -1,4 +1,6 @@
 
+var exec = require('child_process').exec;
+
 /**
  * Login to a Swiftly account.
  *
@@ -93,13 +95,17 @@ var download = exports.download = function(path, url) {
     if (url) nightmare.goto(url);
     nightmare
       .evaluate(function () {
-        var urls = document.querySelectorAll('.attachment__actions__download')
-          .map(function (link) {
-            return link.href;
-          })
-          .filter(function (url) {
-            return url.indexOf('deliveries') > 0;
-          });
+        var els = [];
+        var all = document.querySelectorAll('.attachment__actions__download');
+        for (var i = 0; i < all.length; i++) {
+          els.push(all[i]);
+        }
+        var urls = els.map(function (link) {
+          return link.href;
+        })
+        .filter(function (url) {
+          return url.indexOf('deliveries') > 0;
+        });
         return urls;
       }, function (urls) {
         urls.forEach(function (file) {
