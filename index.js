@@ -102,17 +102,19 @@ var download = exports.download = function(path, url) {
         for (var i = 0; i < all.length; i++) {
           els.push(all[i]);
         }
-        var urls = els.map(function (link) {
-          return link.href;
+        var downloads = els.filter(function (link) {
+          return link.href.indexOf('deliveries') > 0;
         })
-        .filter(function (url) {
-          return url.indexOf('deliveries') > 0;
+        .map(function (link) {
+          var url = link.href;
+          var name = link.parentElement.parentElement.querySelector('.attachment__filename').textContent.toLowerCase();
+          return { url : url, name : name };
         });
-        return urls;
+        return downloads;
       }, function (urls) {
         urls.forEach(function (file, index) {
-          var stream = fs.createWriteStream(path + 'file-' + index + '.svg');
-          request.get(file).pipe(stream);
+          var stream = fs.createWriteStream(path + '/' + file.name);
+          request.get(file.url).pipe(stream);
         });
       })
       .wait(3000);
