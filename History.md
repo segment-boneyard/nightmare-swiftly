@@ -1,5 +1,5 @@
 
-n.n.n / 2014-04-13 
+0.0.6 / 2014-04-13 
 ==================
 
   * fixing url mapping and require exec
