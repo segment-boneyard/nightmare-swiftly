@@ -1,4 +1,9 @@
 
+n.n.n / 2014-04-13 
+==================
+
+  * adding gitignore and fixing downloads to preserve name
+
 0.0.7 / 2014-04-13 
 ==================
 
