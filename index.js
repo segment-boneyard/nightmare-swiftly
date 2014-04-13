@@ -9,6 +9,7 @@
 var login = exports.login = function(email, password){
   return function(nightmare) {
     nightmare
+      .viewport(800, 1600)
       .goto('https://swiftly.com/login')
         .type('#username', email)
         .type('#password', password)
