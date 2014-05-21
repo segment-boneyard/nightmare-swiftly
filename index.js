@@ -34,7 +34,7 @@ var task = exports.task = function(instructions, uploads, path) {
   return function(nightmare) {
     nightmare
       .use(create(instructions, uploads))
-      .use(onState('Delivered'))
+      .use(wait('delivered'))
       .use(download(path))
       .use(approve());
   };
@@ -91,24 +91,19 @@ var state = exports.state = function(fn) {
 };
 
 /**
- * On task state. One of:
- *
- *   - 'pending'
- *   - 'in progress'
- *   - 'delivered'
- *   - 'approved'
- *
+ * Wait until a task has a certain `state`.
+
  * @param {String} state
  */
 
-var onState = exports.onState = function(state) {
-  var between = 1000 * 30; // 30 seconds
+var wait = exports.wait = function(state) {
+  var interval = 1000 * 30; // 30 seconds
   return function(nightmare) {
     nightmare
       .wait(function() {
         var pill = document.querySelector('.pill');
         return pill ? pill.textContent.toLowerCase() : 'pending';
-      }, state.toLowerCase(), between);
+      }, state.toLowerCase(), interval);
   };
 };
 
