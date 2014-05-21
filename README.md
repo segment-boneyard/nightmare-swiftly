@@ -11,11 +11,11 @@ Login to your account.
 
 Create a new task, uploads is an array of string paths, must include at least one upload by Swiftly rules. The callback signature is `cb(taskUrl)`.
 
-### .state(taskUrl, callback)
+### .state(callback)
 
 Get the task's state. One of: `'pending'`, `'in progress'`, `'delivered'` or `'approved'`. 
 
-### .wait(taskUrl, state, callback)
+### .wait(state, callback)
 
 Lets you wait until a task hits a state.
 
