@@ -48,14 +48,14 @@ var task = exports.task = function(instructions, uploads, path) {
  * @param {Function} callback
  */
 
-var create = exports.create = function (instructions, uploads){
-  return function(nightmare){
+var create = exports.create = function(instructions, uploads) {
+  return function(nightmare) {
     nightmare
       .goto('https://swiftly.com/create')
       .wait(2000)
       .type('#body', instructions);
 
-    uploads.forEach(function (path) {
+    uploads.forEach(function(path) {
       nightmare.upload('input[name=qqfile]', path);
     });
 
@@ -64,24 +64,51 @@ var create = exports.create = function (instructions, uploads){
       .click('#task-pay-button')
       .wait(500)
       .click('#pay-button')
+      .wait()
       .wait();
   };
 };
 
 /**
- * On task state.
+ * Get task state. One of:
  *
- * @param {String} state "Delivered", "Approved"
+ *   - 'pending'
+ *   - 'in progress'
+ *   - 'delivered'
+ *   - 'approved'
+ *
+ * @param {String} state
+ */
+
+var state = exports.state = function(fn) {
+  return function(nightmare) {
+    nightmare
+      .evaluate(function() {
+        var pill = document.querySelector('.pill');
+        return pill ? pill.textContent.toLowerCase() : 'pending';
+      }, fn);
+  };
+};
+
+/**
+ * On task state. One of:
+ *
+ *   - 'pending'
+ *   - 'in progress'
+ *   - 'delivered'
+ *   - 'approved'
+ *
+ * @param {String} state
  */
 
 var onState = exports.onState = function(state) {
-  var between = 1000 * 60 * 10; // 10 minutes
-  return function(nightmare){
+  var between = 1000 * 30; // 30 seconds
+  return function(nightmare) {
     nightmare
-      .wait(function () {
+      .wait(function() {
         var pill = document.querySelector('.pill');
-        return (pill ? pill.textContent : '');
-      }, state, between);
+        return pill ? pill.textContent.toLowerCase() : 'pending';
+      }, state.toLowerCase(), between);
   };
 };
 
@@ -96,23 +123,19 @@ var download = exports.download = function(path, url) {
   return function(nightmare){
     if (url) nightmare.goto(url);
     nightmare
-      .evaluate(function () {
-        var els = [];
-        var all = document.querySelectorAll('.attachment__actions__download');
-        for (var i = 0; i < all.length; i++) {
-          els.push(all[i]);
-        }
-        var downloads = els.filter(function (link) {
-          return link.href.indexOf('deliveries') > 0;
-        })
-        .map(function (link) {
-          var url = link.href;
-          var name = link.parentElement.parentElement.querySelector('.attachment__filename').textContent.toLowerCase();
-          return { url : url, name : name };
+      .evaluate(function() {
+        var deliveries = document.querySelectorAll('.delivery');
+        var delivery = deliveries[deliveries.length - 1];
+        var links = delivery.querySelectorAll('.attachment__actions__download');
+        var files = [].slice.call(links).map(function(link){
+          return {
+            name: link.getAttribute('download'),
+            url: link.getAttribute('href')
+          };
         });
-        return downloads;
-      }, function (urls) {
-        urls.forEach(function (file, index) {
+        return files;
+      }, function(files) {
+        files.forEach(function(file) {
           var stream = fs.createWriteStream(path + '/' + file.name);
           request.get(file.url).pipe(stream);
         });
@@ -128,7 +151,7 @@ var download = exports.download = function(path, url) {
  */
 
 var approve = exports.approve = function(url) {
-  return function(nightmare){
+  return function(nightmare) {
     if (url) nightmare.goto(url);
     nightmare
       .click('.task-actions .button--primary')
