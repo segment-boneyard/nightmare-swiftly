@@ -18,6 +18,7 @@ var login = exports.login = function(email, password){
         .type('#username', email)
         .type('#password', password)
         .click('.button--primary')
+      .wait()
       .wait();
   };
 };
@@ -64,7 +65,24 @@ var create = exports.create = function (instructions, uploads){
       .click('#task-pay-button')
       .wait(500)
       .click('#pay-button')
+      .wait()
       .wait();
+  };
+};
+
+/**
+ * Get task state.
+ *
+ * @param {String} state "Delivered", "Approved"
+ */
+
+var onState = exports.state = function(fn) {
+  return function(nightmare){
+    nightmare
+      .evaluate(function () {
+        var pill = document.querySelector('.pill');
+        return pill ? pill.textContent.toLowerCase() : 'pending';
+      }, fn);
   };
 };
 
@@ -75,13 +93,13 @@ var create = exports.create = function (instructions, uploads){
  */
 
 var onState = exports.onState = function(state) {
-  var between = 1000 * 60 * 10; // 10 minutes
+  var between = 5000//1000 * 60 * 10; // 10 minutes
   return function(nightmare){
     nightmare
       .wait(function () {
         var pill = document.querySelector('.pill');
-        return (pill ? pill.textContent : '');
-      }, state, between);
+        return pill ? pill.textContent.toLowerCase() : 'pending';
+      }, state.toLowerCase(), between);
   };
 };
 
@@ -97,22 +115,18 @@ var download = exports.download = function(path, url) {
     if (url) nightmare.goto(url);
     nightmare
       .evaluate(function () {
-        var els = [];
-        var all = document.querySelectorAll('.attachment__actions__download');
-        for (var i = 0; i < all.length; i++) {
-          els.push(all[i]);
-        }
-        var downloads = els.filter(function (link) {
-          return link.href.indexOf('deliveries') > 0;
-        })
-        .map(function (link) {
-          var url = link.href;
-          var name = link.parentElement.parentElement.querySelector('.attachment__filename').textContent.toLowerCase();
-          return { url : url, name : name };
+        var deliveries = document.querySelectorAll('.delivery');
+        var delivery = deliveries[deliveries.length - 1];
+        var links = delivery.querySelectorAll('.attachment__actions__download');
+        var files = [].slice.call(links).map(function(link){
+          return {
+            name: link.getAttribute('download'),
+            url: link.getAttribute('href')
+          };
         });
-        return downloads;
-      }, function (urls) {
-        urls.forEach(function (file, index) {
+        return files;
+      }, function(files){
+        files.forEach(function(file){
           var stream = fs.createWriteStream(path + '/' + file.name);
           request.get(file.url).pipe(stream);
         });
