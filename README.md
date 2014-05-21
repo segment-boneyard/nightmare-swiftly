@@ -15,7 +15,7 @@ Create a new task, uploads is an array of string paths, must include at least on
 
 Get the task's state. One of: `'pending'`, `'in progress'`, `'delivered'` or `'approved'`. 
 
-### .onState(taskUrl, state, callback)
+### .wait(taskUrl, state, callback)
 
 Lets you wait until a task hits a state.
 
