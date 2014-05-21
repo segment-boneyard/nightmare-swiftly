@@ -97,7 +97,7 @@ var state = exports.state = function(fn) {
  */
 
 var wait = exports.wait = function(state) {
-  var interval = 1000 * 30; // 30 seconds
+  var interval = 1000 * 60; // 1 minute
   return function(nightmare) {
     nightmare
       .wait(function() {
