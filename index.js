@@ -56,13 +56,13 @@ var create = exports.create = function(instructions, uploads) {
       .type('#body', instructions);
 
     uploads.forEach(function(path) {
-      nightmare.upload('input[name=qqfile]', path);
+      nightmare.upload('input[type=file]', path);
     });
 
     nightmare
       .wait(5000)
       .click('#task-pay-button')
-      .wait(500)
+      .wait(2000)
       .click('#pay-button')
       .wait()
       .wait();
@@ -97,7 +97,7 @@ var state = exports.state = function(fn) {
  */
 
 var wait = exports.wait = function(state) {
-  var interval = 1000 * 60; // 1 minute
+  var interval = 1000 * 30; // 30 seconds
   return function(nightmare) {
     nightmare
       .wait(function() {
