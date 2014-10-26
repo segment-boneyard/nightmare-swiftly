@@ -1,4 +1,9 @@
 
+0.2.3 / 2014-10-26
+==================
+
+  * adding better wait for more robust downloads
+
 0.2.2 / 2014-07-16
 ==================
 
