@@ -116,7 +116,7 @@ var wait = exports.wait = function(state) {
 
 var download = exports.download = function(path, url) {
   return function(nightmare){
-    if (url) nightmare.goto(url);
+    if (url) nightmare.goto(url).wait('.attachment__actions__download');
     nightmare
       .evaluate(function() {
         var deliveries = document.querySelectorAll('.delivery');
