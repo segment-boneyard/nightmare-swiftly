@@ -14,7 +14,7 @@ var login = exports.login = function(email, password){
   return function(nightmare) {
     nightmare
       .viewport(800, 1600)
-      .goto('https://swiftly.com/login')
+      .goto('http://99designs.com/login')
         .type('#username', email)
         .type('#password', password)
         .click('.button--primary')
@@ -51,7 +51,7 @@ var task = exports.task = function(instructions, uploads, path) {
 var create = exports.create = function(instructions, uploads) {
   return function(nightmare) {
     nightmare
-      .goto('https://swiftly.com/create')
+      .goto('https://99designs.com/tasks/create')
       .wait(2000)
       .type('#body', instructions);
 
