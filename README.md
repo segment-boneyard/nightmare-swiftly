@@ -1,7 +1,7 @@
 nightmare-swiftly
 =================
 
-[Nightmare](https://github.com/segmentio/nightmare) plugin for Swiftly.com
+[Nightmare](https://github.com/segmentio/nightmare) plugin for [99designs Tasks](https://99designs.com/tasks)
 
 ### .login(email, password)
 
@@ -9,7 +9,7 @@ Login to your account.
 
 ### .task(instructions, uploads, callback)
 
-Create a new task, uploads is an array of string paths, must include at least one upload by Swiftly rules. The callback signature is `cb(taskUrl)`.
+Create a new task, uploads is an array of string paths, must include at least one upload by 99design Tasks rules. The callback signature is `cb(taskUrl)`.
 
 ### .state(callback)
 
